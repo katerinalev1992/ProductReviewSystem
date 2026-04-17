@@ -1,0 +1,24 @@
+<section class="hero card">
+  <h1>Browse products</h1>
+  <p class="muted">A compact marketplace-like demo focused on product reviews.</p>
+</section>
+
+<div class="grid product-grid" *ngIf="products.length; else loadingTpl">
+  <article class="card product-card" *ngFor="let product of products">
+    <img *ngIf="product.image_url" [src]="product.image_url" [alt]="product.name" class="product-card__image" />
+    <h2>{{ product.name }}</h2>
+    <p class="muted">{{ product.description }}</p>
+    <div class="product-card__meta">
+      <strong>{{ product.price | currency }}</strong>
+      <div class="rating-inline">
+        <app-rating-stars [rating]="product.averageRating ?? 0" />
+        <span class="muted">{{ product.averageRating ?? 'New' }} · {{ product.reviewCount }} reviews</span>
+      </div>
+    </div>
+    <a class="button" [routerLink]="['/products', product.id]">View details</a>
+  </article>
+</div>
+
+<ng-template #loadingTpl>
+  <p class="card muted">Loading products...</p>
+</ng-template>

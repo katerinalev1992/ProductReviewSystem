@@ -1,0 +1,20 @@
+<section class="review-stack">
+  <article class="card review-card" *ngFor="let review of reviews">
+    <div class="review-card__header">
+      <div>
+        <h3>{{ review.title }}</h3>
+        <p class="muted">by {{ review.author_name }} · {{ review.created_at | date: 'mediumDate' }}</p>
+      </div>
+      <app-rating-stars [rating]="review.rating" />
+    </div>
+
+    <p>{{ review.content }}</p>
+
+    <div class="review-card__footer">
+      <span class="muted">Helpful votes: {{ review.helpful_count }}</span>
+      <button class="button button--secondary" (click)="helpfulClicked.emit(review.id)">Helpful</button>
+    </div>
+  </article>
+
+  <p class="card muted" *ngIf="!reviews.length">No reviews match the current filter.</p>
+</section>

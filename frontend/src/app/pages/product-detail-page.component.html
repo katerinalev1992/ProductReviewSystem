@@ -1,0 +1,63 @@
+<a class="back-link" routerLink="/">← Back to products</a>
+
+<ng-container *ngIf="product; else loadingTpl">
+  <section class="card detail-hero">
+    <img *ngIf="product.image_url" [src]="product.image_url" [alt]="product.name" class="detail-hero__image" />
+    <div>
+      <h1>{{ product.name }}</h1>
+      <p>{{ product.description }}</p>
+      <div class="detail-meta">
+        <strong>{{ product.price | currency }}</strong>
+        <div class="rating-inline">
+          <app-rating-stars [rating]="product.averageRating ?? 0" />
+          <span>{{ product.averageRating ?? 0 | number: '1.1-1' }} / 5 · {{ product.reviewCount }} reviews</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid detail-grid">
+    <div class="stack">
+      <section class="card">
+        <h3>Rating summary</h3>
+        <div class="breakdown-row" *ngFor="let item of product.ratingBreakdown">
+          <span>{{ item.rating }}★</span>
+          <div class="progress">
+            <div class="progress__fill" [style.width.%]="product.reviewCount ? (item.count / product.reviewCount) * 100 : 0"></div>
+          </div>
+          <span>{{ item.count }}</span>
+        </div>
+      </section>
+
+      <section class="card filter-card">
+        <div class="filter-row">
+          <label>
+            Sort
+            <select [value]="sort" (change)="onSortChange(($any($event.target)).value)">
+              <option value="newest">Newest</option>
+              <option value="highest">Highest rating</option>
+              <option value="lowest">Lowest rating</option>
+              <option value="helpful">Most helpful</option>
+            </select>
+          </label>
+
+          <label>
+            Rating
+            <select [value]="ratingFilter" (change)="onRatingChange(($any($event.target)).value)">
+              <option value="all">All ratings</option>
+              <option *ngFor="let value of [5,4,3,2,1]" [value]="value">{{ value }} stars</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <app-review-list [reviews]="reviews" (helpfulClicked)="markHelpful($event)" />
+    </div>
+
+    <app-review-form [loading]="submitting" (reviewCreated)="createReview($event)" />
+  </section>
+</ng-container>
+
+<ng-template #loadingTpl>
+  <p class="card muted">Loading product...</p>
+</ng-template>

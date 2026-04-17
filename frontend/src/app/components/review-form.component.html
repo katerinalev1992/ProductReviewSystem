@@ -1,0 +1,31 @@
+<section class="card">
+  <h3>Write a review</h3>
+
+  <form class="review-form" [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      Name
+      <input type="text" formControlName="authorName" placeholder="Your name" />
+    </label>
+
+    <label>
+      Title
+      <input type="text" formControlName="title" placeholder="Review title" />
+    </label>
+
+    <label>
+      Rating
+      <select formControlName="rating">
+        <option *ngFor="let value of ratings" [value]="value">{{ value }} / 5</option>
+      </select>
+    </label>
+
+    <label>
+      Review
+      <textarea rows="5" formControlName="content" placeholder="Share your experience"></textarea>
+    </label>
+
+    <p class="error" *ngIf="submitted && form.invalid">Please fill all fields correctly.</p>
+
+    <button class="button" type="submit" [disabled]="loading">{{ loading ? 'Submitting...' : 'Submit review' }}</button>
+  </form>
+</section>
