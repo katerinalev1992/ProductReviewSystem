@@ -6,14 +6,6 @@ This repository contains:
 - **backend/** – Node.js + Express + TypeScript API (REST + GraphQL) backed by SQLite
 - **frontend/** – Angular standalone SPA for browsing products and managing reviews
 
-## Why this implementation
-
-I optimized for these assignment goals:
-- **easy setup**: SQLite avoids external infrastructure; one command per app starts the system
-- **maintainability**: clear folder structure, typed DTOs, validation, reusable services
-- **extendability**: the domain model leaves room for users, moderation, tags, order verification, media uploads, and search
-- **developer friendliness**: seed script, API health route, CORS enabled, env examples, and CI checks
-
 ## Functional scope
 
 ### Implemented
@@ -57,6 +49,13 @@ The backend follows a lightweight layered structure:
 - **Angular standalone components**
 - **Reactive forms**
 - **HttpClient** calling GraphQL operations against `/graphql`
+
+## Thought process behind implementation
+
+- Build an end-to-end vertical slice first (list products -> product detail -> reviews) before adding optional features, so the base user flow is always demonstrable.
+- Keep boundaries clear between transport (`routes`/GraphQL), business logic (`services`), and persistence (`db`) to make future swaps (for example SQLite -> PostgreSQL) low-risk.
+- Use pragmatic infrastructure defaults (SQLite, in-memory cache, in-memory broker) to optimize for local setup speed and assignment reviewability.
+- Favor explicit validation and typed contracts to reduce runtime ambiguity and make frontend/backend integration predictable.
 
 ## Design decisions and trade-offs
 
